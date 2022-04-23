@@ -10,6 +10,7 @@ chmod +x /usr/local/bin/docker-compose
 yum install git -y
 git clone https://github.com/Morgoliath/203-Dockerization.git
 cd 203-Dockerization/Docker
+docker build -t "morgoliath/bookstore-api:1.0" .
 docker-compose up -d
 hostnamectl set-hostname "docker-project-server"
 bash
