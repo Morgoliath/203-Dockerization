@@ -1,11 +1,14 @@
-//This Terraform Template creates 1 Docker Machines on EC2 Instances
-//Docker-compose Machines will run on Amazon Linux 2 with custom security group
-//allowing SSH (22) and HTTP (80) connections from anywhere.
-//User needs to select appropriate key name when launching the instance.
+terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+      version = "4.11.0"
+    }
+  }
+}
 
 provider "aws" {
   region = "us-east-1"
-  //  If you have entered your credentials in AWS CLI before, you do not need to use these arguments.
 }
 
 data "aws_ami" "amazon-linux-2" {
@@ -44,20 +47,6 @@ resource "aws_instance" "docker-server" {
     }
 
     ingress {
-      from_port   = 5000
-      protocol    = "tcp"
-      to_port     = 5000
-      cidr_blocks = ["0.0.0.0/0"]
-    }
-
-    ingress {
-      from_port   = 8080
-      protocol    = "tcp"
-      to_port     = 8080
-      cidr_blocks = ["0.0.0.0/0"]
-    }
-
-    ingress {
       from_port   = 22
       protocol    = "tcp"
       to_port     = 22
@@ -66,7 +55,7 @@ resource "aws_instance" "docker-server" {
 
     egress {
       from_port   = 0
-      protocol    = -1
+      protocol    = "-1"
       to_port     = 0
       cidr_blocks = ["0.0.0.0/0"]
     }
